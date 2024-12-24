@@ -1,4 +1,4 @@
-package com.amaras.spa.service.Interface;
+package com.amaras.spa.service.interfaz;
 
 import com.amaras.spa.model.dto.UserDto;
 
@@ -15,6 +15,4 @@ public interface IUserService {
     UserDto deleteUser(Long id);
 
     UserDto saveUser(UserDto userDto);
-
-    UserDto findUserByEmail(String email);
 }
