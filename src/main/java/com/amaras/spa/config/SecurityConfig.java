@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)//Para el buen funcionamiento de PreAuthorize
 @RequiredArgsConstructor
 public class SecurityConfig {
     //Esta clase va a contener la cadena de filtros y el método securityFilterChain
@@ -31,7 +32,9 @@ public class SecurityConfig {
                         csrf.disable())//Deshabilitamos los csrf, porque vamos a trabajar con nuestros jwt
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/auth/**").permitAll()//Endpoints públicos
+                                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")//Endpoints para el admin
+                                .requestMatchers("/api/v1/user/**").hasAnyRole("USER", "ADMIN")//Endpoints para el user y el admin
                                 .anyRequest().authenticated()
                                 )
                 .sessionManagement(sessionManager ->
