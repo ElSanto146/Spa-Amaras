@@ -22,12 +22,11 @@ public class UserDto {
     private String lastName;
 
     @Email(message = "El email no es válido")
-    private String email;
+    private String username;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
-    @NotBlank(message = "El rol no puede estar vacío")
     private String role;
 
 }
