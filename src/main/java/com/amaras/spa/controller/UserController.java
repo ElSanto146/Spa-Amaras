@@ -4,13 +4,14 @@ import com.amaras.spa.model.dto.UserDto;
 import com.amaras.spa.service.interfaz.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1")
 public class UserController {
 
     private final IUserService userService;
@@ -19,14 +20,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
+    @PostMapping("/admin/create")
     public ResponseEntity<UserDto> createUser (@RequestBody @Valid UserDto userDto){
         UserDto savedUser = userService.saveUser(userDto);
         URI location = URI.create("/v1/user/" + savedUser.getId());
         return ResponseEntity.created(location).body(savedUser);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user/users")
     public ResponseEntity<List<UserDto>> ListUsers(){
         List<UserDto> userDtoList = userService.allUsers();
         if (userDtoList.isEmpty()){
@@ -35,9 +36,16 @@ public class UserController {
         return ResponseEntity.ok(userDtoList);
     }
 
-    @GetMapping("/demo")
-    public ResponseEntity<String> demo(){
-        return ResponseEntity.ok("Desde endpoint protegido");
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin")
+    public ResponseEntity<String> demoadmin(){
+        return ResponseEntity.ok("Desde endpoint protegido para admin");
+    }
+
+    //@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/user")
+    public ResponseEntity<String> demouser(){
+        return ResponseEntity.ok("Desde endpoint protegido para user");
     }
 
     @GetMapping("/{id}")

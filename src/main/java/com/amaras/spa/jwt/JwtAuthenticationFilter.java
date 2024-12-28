@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -41,14 +43,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         //Si el token es correcto acceder al username
         username = jwtService.getUsernameFromToken(token);
+
         //Si username no es nulo y está autenticado. y no está en el securityContextHolder lo buscamos en la bbdd
         if (username!=null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
             //Validamos si el token es correcto
             if (jwtService.validateToken(token, userDetails)){
+
+                List<GrantedAuthority> authorities = jwtService.extractRoles(token);
+
                 //Si es correcto se autentica
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        userDetails, null, authorities);
                 //Se añade los detalles de la petición
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

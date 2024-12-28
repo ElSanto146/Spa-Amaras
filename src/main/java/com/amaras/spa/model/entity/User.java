@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 //Se implementa UserDetarils para poder usarlo en la autenticación
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +44,7 @@ public class User implements UserDetails {
     //Retorna una lista que contiene un único objeto que representa el rol del usuario
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
     }
 
     //Los booleanos se ponen a true porque estas validaciones las hace JWT

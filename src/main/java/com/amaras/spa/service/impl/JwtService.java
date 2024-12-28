@@ -4,34 +4,39 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
-    private static  final String SECRET_KEY= "586O325633257865214F44526582F462152325H52325454452GFD54897JHKH24FGH62354";
+    private static  final String SECRET_KEY= "kGn6sH7vN3mrC5ZsYtY/fYVkNz9zWR+7TcW8fgklXW+2Xri8ZRmWDXYEzUkzEj4Z8+x7TOpmIwN1plcPiOhIwA==";
 
     public String getToken(UserDetails user){
-        return getToken(new HashMap<>(), user);
+        Map<String, Object> claims = Map.of("roles", user.getAuthorities());//agregado
+        return createToken(claims, user);
     }
 
-    //Método para obtener el token con claims adicionales
-    private String getToken (Map<String, Object> extraClaims, UserDetails user){
+    //Metodo para obtener el token con claims adicionales
+    private String createToken (Map<String, Object> claims, UserDetails user){
+
         //Retornamos el token. Construimos el objeto
         return Jwts
                 .builder()
-                .setClaims(extraClaims)
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))//fecha que se crea el token
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))//fecha de expiración, 1 día
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))//fecha de expiración, 1 día
                 .signWith(getKey(), SignatureAlgorithm.HS256)//firmamos el token
                 .compact();//método que construye y serializa el token
     }
@@ -52,7 +57,7 @@ public class JwtService {
         //Obtenemos el username del token
         final String username = getUsernameFromToken(token);
         //Comparamos si el username del token es igual al username del userDetails y si el token ha expirado
-        return (username.equalsIgnoreCase(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     //Método privado para obtener todos los claims del token
@@ -84,4 +89,23 @@ public class JwtService {
         return getExpirationDateFromToken(token).before(new Date());
     }
 
+    // Extraer roles del token
+    public List<GrantedAuthority> extractRoles(String token) {
+        Claims claims = getAllClaims(token);
+
+        // Aseguramos que los roles son una lista de mapas con "authority"
+        List<?> roles = claims.get("roles", List.class);
+        if (roles == null || roles.isEmpty()) {
+            return List.of(); // Retornar una lista vacía si no hay roles
+        }
+
+        // Convertir roles a GrantedAuthority
+        return roles.stream()
+                .filter(Map.class::isInstance) // Verificar que cada elemento es un mapa
+                .map(role -> ((Map<?, ?>) role).get("authority")) // Obtener el valor de "authority"
+                .filter(Objects::nonNull) // Excluir valores nulos
+                .map(Object::toString) // Convertir a String
+                .map(SimpleGrantedAuthority::new) // Crear SimpleGrantedAuthority
+                .collect(Collectors.toList());
+    }
 }
