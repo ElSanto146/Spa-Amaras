@@ -10,7 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final IUserService userService;
@@ -33,6 +33,11 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(userDtoList);
+    }
+
+    @GetMapping("/demo")
+    public ResponseEntity<String> demo(){
+        return ResponseEntity.ok("Desde endpoint protegido");
     }
 
     @GetMapping("/{id}")

@@ -6,28 +6,23 @@ import com.amaras.spa.model.dto.UserDto;
 import com.amaras.spa.model.entity.User;
 import com.amaras.spa.repository.UserRepository;
 import com.amaras.spa.service.interfaz.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImp implements IUserService {
 
     private final UserRepository userRepository;
     private final IUserMapper userMapper;
 
-    public UserServiceImp(UserRepository userRepository, IUserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public List<UserDto> allUsers() {
        List<UserDto> userDtoList = userMapper.toUserDtoList(userRepository.findAll());
-       /*if (userDtoList.isEmpty()){
-           throw new AppException("No hay usuarios registrados", HttpStatus.NO_CONTENT);
-       }*/
         return userDtoList;
     }
 
@@ -59,14 +54,14 @@ public class UserServiceImp implements IUserService {
 
     @Override
     public UserDto saveUser(UserDto userDto) {
-        existUser(userDto.getEmail());
+        existUser(userDto.getUsername());
         User user = userRepository.save(userMapper.toUser(userDto));
         return userMapper.toUserDto(user);
     }
 
-    private void existUser(String email){
-        if (userRepository.existsUserByEmail(email)){
-            throw new AppException("El email '"+email+"' ya está en uso", HttpStatus.CONFLICT);
+    private void existUser(String username) {
+        if (userRepository.existsUserByUsername(username)){
+            throw new AppException("El email '"+username+"' ya está en uso", HttpStatus.CONFLICT);
         }
     }
 }
