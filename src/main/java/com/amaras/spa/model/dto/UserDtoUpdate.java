@@ -16,17 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserDtoUpdate {
 
     private Long id;
 
-    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
 
-    @Email(message = "El email no es válido")
     private String username;
 
-    @NotBlank(message = "El teléfono no puede estar vacío")
+    private String password;
+
     private String phone;
 
     @Enumerated(EnumType.STRING)

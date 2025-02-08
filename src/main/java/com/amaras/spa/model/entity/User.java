@@ -1,5 +1,6 @@
 package com.amaras.spa.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -11,12 +12,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
@@ -26,20 +28,29 @@ public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    @NotBlank(message = "El nombre no puede estar vacío. Desde el entity")
     private String name;
-    @Column(name = "last_name")
-    private String lastName;
-    @NotBlank
+
     @Column(nullable = false, unique = true)//Garantiza restricciones a nivel de base de datos
     private String username;
-    @NotBlank
-    @Column(nullable = false) // Asegura que la contraseña no sea nula
+
+
     private String password;
+
+    @NotBlank(message = "El teléfono no puede estar vacío")
+    @Column(nullable = false)
+    private String phone;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Turn> turns;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference //Rompe el ciclo de serialización. Para evitar la recursividad
+    private List<Turn> turns = new ArrayList<>();
+
+
 
     //Retorna una lista que contiene un único objeto que representa el rol del usuario
     @Override
