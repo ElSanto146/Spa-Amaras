@@ -12,26 +12,23 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserUpResponseDto {
 
     private Long id;
 
-    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
 
-    @Email(message = "El email no es válido")
     private String username;
 
-    @NotBlank(message = "El teléfono no puede estar vacío")
     private String phone;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private List<TurnResponseDto> turns;
-
 }

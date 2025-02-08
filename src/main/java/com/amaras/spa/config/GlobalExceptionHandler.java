@@ -2,6 +2,7 @@ package com.amaras.spa.config;
 
 import com.amaras.spa.exception.AppException;
 import com.amaras.spa.model.dto.ErrorDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,6 +35,20 @@ public class GlobalExceptionHandler {
                                 FieldError:: getField,
                                 FieldError :: getDefaultMessage
                         )));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDto> handlerArgumentExepcion(IllegalArgumentException ex){
+        return ResponseEntity
+                .badRequest()
+                .body(new ErrorDto(ex.getMessage()));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseBody
+    public ResponseEntity<String> handlerRuntimeException(RuntimeException ex){
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_GATEWAY);
     }
 
 }
