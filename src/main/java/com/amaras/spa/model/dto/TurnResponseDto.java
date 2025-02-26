@@ -2,6 +2,7 @@ package com.amaras.spa.model.dto;
 
 import com.amaras.spa.model.entity.EnumStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,8 @@ public class TurnResponseDto {
 
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy" )
+
     private LocalDate date;
 
     private String hour;
