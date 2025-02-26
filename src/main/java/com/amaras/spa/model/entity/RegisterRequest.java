@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
     //Esta clase es un POJO que representa la petición de registro
 
+    Long id;
+
     @NotBlank(message = "El email no puede estar vacío1")
     String username;
 
