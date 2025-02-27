@@ -2,8 +2,7 @@ package com.amaras.spa.model.entity;
 
 public enum EnumStatus {
 
-    PENDIENTE,     // Turno pendiente
-    CONFIRMADO,   // Turno confirmado
-    CANCELADO ,    // Turno cancelado
-    ATENDIDO,     // Turno atendido
+    PENDING,     // Turno pendiente
+    CONFIRMED,   // Turno confirmado
+    CANCELED     // Turno cancelado
 }
