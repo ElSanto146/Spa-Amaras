@@ -15,6 +15,7 @@ import java.util.List;
 public class AuthResponse {
     //Esta clase nos interesa que devuelva el token de autenticación
 
+    private Long id;
     private String token;
     private String username;
     private String name;
