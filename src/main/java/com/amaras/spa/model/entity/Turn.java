@@ -36,5 +36,17 @@ public class Turn implements Serializable {
     @JsonBackReference //Evita la serialización infinita del usuario dentro de turnos
     private User user;
 
+    public static class TurnBuilder {
+        private User user;
+
+        public TurnBuilder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public User getUser() {
+            return this.user;
+        }
+    }
 
 }
