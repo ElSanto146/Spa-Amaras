@@ -16,19 +16,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.amaras.spa.repository")
 @RequiredArgsConstructor
 public class ApplicatonConfig {
 
     private final UserRepository userRepository;
 
-    //Método para acceder al authenticationManager
+    //Metodo para acceder al authenticationManager
     @Bean
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    //Método que devuelva el proveedor. El authenticationProvider
+    //Mtodo que devuelva el proveedor. El authenticationProvider
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
