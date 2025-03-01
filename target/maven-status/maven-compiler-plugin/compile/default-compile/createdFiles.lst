@@ -8,6 +8,7 @@ com\amaras\spa\controller\UserController.class
 com\amaras\spa\model\dto\UserResponseDto.class
 com\amaras\spa\model\entity\Role.class
 com\amaras\spa\SpaApplication.class
+com\amaras\spa\config\ApplicationConfig.class
 com\amaras\spa\service\impl\UserServiceImp.class
 com\amaras\spa\model\entity\AuthResponse.class
 com\amaras\spa\repository\TurnRepository.class
@@ -18,7 +19,6 @@ com\amaras\spa\service\impl\JwtService.class
 com\amaras\spa\model\entity\RegisterRequest$RegisterRequestBuilder.class
 com\amaras\spa\config\SecurityConfig.class
 com\amaras\spa\exception\AppException.class
-com\amaras\spa\config\ApplicatonConfig.class
 com\amaras\spa\model\dto\UserDto$UserDtoBuilder.class
 com\amaras\spa\model\entity\User$UserBuilder.class
 com\amaras\spa\service\impl\AuthService.class
