@@ -16,6 +16,7 @@ public class AuthResponse {
     //Esta clase nos interesa que devuelva el token de autenticación
 
     private String token;
+    private Long id;
     private String username;
     private String name;
     private String phone;
