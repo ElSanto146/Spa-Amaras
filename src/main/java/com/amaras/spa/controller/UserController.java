@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://amaras-front.web.app")
 public class UserController {
 
     private final IUserService userService;
