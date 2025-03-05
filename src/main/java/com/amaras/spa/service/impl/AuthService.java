@@ -45,6 +45,7 @@ public class AuthService {
                 .name(userRepository.findByUsername(request.getUsername()).get().getName()) // Nombre del usuario
                 .username(userRepository.findByUsername(request.getUsername()).get().getUsername()) // Email del usuario
                 .phone(userRepository.findByUsername(request.getUsername()).get().getPhone())// Teléfono del usuario
+                .id(userRepository.findByUsername(request.getUsername()).get().getId())// Id del usuario
                 .img("") // Imagen del usuario
                 .roles(roles) // Roles del usuario
                 .build();
@@ -67,6 +68,7 @@ public class AuthService {
 
         return AuthResponse.builder().
                 token(jwtService.getToken(user))
+                .id(user.getId())
                 .name(user.getName())                // Nombre del usuario
                 .username(user.getUsername())        // Username
                 .phone(user.getPhone())              // Teléfono
