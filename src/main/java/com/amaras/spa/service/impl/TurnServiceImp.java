@@ -41,18 +41,22 @@ public class TurnServiceImp implements ITurnService {
                 new AppException("El turno con id:["+id+"] no fue encontrado", HttpStatus.NOT_FOUND));
 
         if (turnDto.getDate() != null && !turnDto.getDate().toString().isBlank()){
-            existTurn(turnDto.getDate(), turnDto.getHour());
-            turn.setDate(turnDto.getDate());
+            if (turn.getDate() == turnDto.getDate() && turn.getHour() == turnDto.getHour()) {
+                turn.setDate(turnDto.getDate());
+            } else {
+                existTurn(turnDto.getDate(), turnDto.getHour());
+            }
         }
         if (turnDto.getHour() != null && !turnDto.getHour().isBlank()){
-            existTurn(turnDto.getDate(), turnDto.getHour());
-            turn.setHour(turnDto.getHour());
+            if (turn.getDate() == turnDto.getDate() && turn.getHour() == turnDto.getHour()) {
+                turn.setHour(turnDto.getHour());
+            } else {
+                existTurn(turnDto.getDate(), turnDto.getHour());
+            }
         }
         if (turnDto.getStatus() != null && !turnDto.getStatus().toString().isBlank()){
             turn.setStatus(turnDto.getStatus());
         }
-
-        turnRepository.save(turn);
 
         return turnMapper.toTurnDto(turn);
     }
@@ -87,5 +91,7 @@ public class TurnServiceImp implements ITurnService {
             throw new AppException("Ya hay un turno asignado en esa fecha y horario", HttpStatus.CONFLICT);
         }
     }
+
+
 
 }
