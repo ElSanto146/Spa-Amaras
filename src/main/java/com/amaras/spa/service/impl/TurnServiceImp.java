@@ -41,14 +41,14 @@ public class TurnServiceImp implements ITurnService {
                 new AppException("El turno con id:["+id+"] no fue encontrado", HttpStatus.NOT_FOUND));
 
         if (turnDto.getDate() != null && !turnDto.getDate().toString().isBlank()){
-            if (turn.getDate() == turnDto.getDate() && turn.getHour() == turnDto.getHour()) {
+            if (turn.getDate() == turnDto.getDate() && turn.getHour().equals(turnDto.getHour())) {
                 turn.setDate(turnDto.getDate());
             } else {
                 existTurn(turnDto.getDate(), turnDto.getHour());
             }
         }
         if (turnDto.getHour() != null && !turnDto.getHour().isBlank()){
-            if (turn.getDate() == turnDto.getDate() && turn.getHour() == turnDto.getHour()) {
+            if (turn.getDate() == turnDto.getDate() && turn.getHour().equals(turnDto.getHour())) {
                 turn.setHour(turnDto.getHour());
             } else {
                 existTurn(turnDto.getDate(), turnDto.getHour());
