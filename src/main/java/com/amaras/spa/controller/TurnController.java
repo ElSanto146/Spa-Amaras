@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "https://amaras-front.web.app")
+@CrossOrigin(origins = "https://amaras-site.netlify.app")
 @RequiredArgsConstructor
 public class TurnController {
 
