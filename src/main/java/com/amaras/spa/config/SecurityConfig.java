@@ -33,7 +33,7 @@ public class SecurityConfig {
         return http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("https://amaras-site.netlify.app")); // Permitir solo este origen
+                    config.setAllowedOriginPatterns(List.of("https://amaras-site.netlify.app")); // Permitir solo este origen
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
